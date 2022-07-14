@@ -1,6 +1,7 @@
 let fs = require("fs");
 let path = require("path");
 
+/*
 // 1.拼接读取的路径
 let str = path.join(__dirname, "data.txt");
 // 2.创建一个读取流
@@ -18,3 +19,30 @@ readStream.on("data",(data)=>{
 readStream.on("close",()=>{
     console.log("表示数据流断开了和文件的关系，并且数据已经读取完毕了");
 });
+*/
+
+// 1.拼接写入的路径
+let str = path.join(__dirname, "azrdream.txt");
+// 2.创建一个写入流
+let wirthStream = fs.createWriteStream(str,{encoding:"utf8"});
+// 3.监听写入流的事件
+wirthStream.on("open",()=>{
+    console.log("表示数据流和文件建立关系成功");
+});
+wirthStream.on("error",()=>{
+    console.log("表示数据流和文件建立关系失败");
+});
+wirthStream.on("close",()=>{
+    console.log("表示数据流断开了和文件的关系");
+});
+let data = "www.azrdream.com";
+let index = 0;
+let timerId = setInterval(()=>{
+    let ch = data[index++];
+    wirthStream.write(ch);
+    console.log("本次写入了", ch);
+    if(index === data.length) {
+        clearInterval(timerId);
+        wirthStream.end();
+    }
+},500);
