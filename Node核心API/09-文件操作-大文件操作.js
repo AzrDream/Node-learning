@@ -21,6 +21,7 @@ readStream.on("close",()=>{
 });
 */
 
+/*
 // 1.拼接写入的路径
 let str = path.join(__dirname, "azrdream.txt");
 // 2.创建一个写入流
@@ -46,3 +47,14 @@ let timerId = setInterval(()=>{
         wirthStream.end();
     }
 },500);
+*/
+
+// 1.生成读取和写入的路径
+let readPath = path.join(__dirname, "test.mp4");
+let writePath = path.join(__dirname, "abc.mp4");
+// 2.创建一个读取流
+let readStream = fs.createReadStream(readPath);
+// 3.创建一个写入流
+let writeStream = fs.createWriteStream(writePath);
+// 利用读取流的管道方法来快速的实现文件拷贝
+readStream.pipe(writeStream);
