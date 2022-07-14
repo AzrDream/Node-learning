@@ -3,6 +3,7 @@ let path = require("path");
 let fs = require("fs");
 let url = require("url");
 let queryString = require("querystring");
+let template = require("art-template");
 
 let persons = {
     "lisi": {
@@ -43,6 +44,7 @@ http.createServer((req, res) => {
             let obj = queryString.parse(params);
             let per = persons[obj.userName];
             let filePath = path.join(__dirname, req.url);
+            /*
             fs.readFile(filePath, "utf8", (err, content) => {
                 if(err){
                     res.writeHead(404, {
@@ -55,6 +57,12 @@ http.createServer((req, res) => {
                 content = content.replace("!!!age!!!", per.age);
                 res.end(content);
             })
+            */
+            let html = template(filePath, per);
+            res.writeHead(200, {
+                "Content-Type": "text/html; charset=utf-8"
+            });
+            res.end(html);
         });
     }
 }).listen(3000);
