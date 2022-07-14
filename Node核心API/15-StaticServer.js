@@ -1,17 +1,9 @@
-let http = require("http");
+let fs = require("fs");
 let path = require("path");
-let ss = require("./15-StaticServer");
+let mime = require("./mime");
 
-let server = http.createServer();
-server.on("request", (req,res)=>{
-    let rootPath = path.join(__dirname, "www");
-    ss.StaticServer(req, res, rootPath);
-});
-server.listen(3000);
-
-/*
-function readFile(req, res) {
-    let filePath = path.join(__dirname, "www", req.url);
+function readFile(req, res, rootPath) {
+    let filePath = path.join(rootPath, req.url);
     let extName = path.extname(filePath);
     let type = mime[extName];
     if(type.startsWith("text")){
@@ -27,4 +19,5 @@ function readFile(req, res) {
         res.end(content);
     });
 }
-*/
+
+exports.StaticServer = readFile;
